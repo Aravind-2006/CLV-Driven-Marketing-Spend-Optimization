@@ -2,6 +2,8 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error, r2_score
 import xgboost as xgb
+import mlflow
+import mlflow.xgboost
 
 # load the RFM table we saved earlier
 data = pd.read_csv("data/rfm_features.csv")
@@ -20,21 +22,21 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 print("Training samples:", len(X_train))
 print("Testing samples:", len(X_test))
 # create the model
-model = xgb.XGBRegressor(n_estimators=100, random_state=42)
+with mlflow.start_run():
+    model = xgb.XGBRegressor(n_estimators=100, random_state=42)
+    model.fit(X_train, y_train)
+    print("Model training complete.")
 
-# train it - this is the "learning" step
-model.fit(X_train, y_train)
+    predictions = model.predict(X_test)
+    mae = mean_absolute_error(np.expm1(y_test), np.expm1(predictions))
+    r2 = r2_score(y_test, predictions)
+    print("Mean Absolute Error:", mae)
+    print("R2 Score:", r2)
 
-print("Model training complete.")
+    mlflow.log_param("n_estimators", 100)
+    mlflow.log_metric("mae", mae)
+    mlflow.log_metric("r2", r2)
+    mlflow.xgboost.log_model(model, "model")
 
-# test it on the hidden 20%
-predictions = model.predict(X_test)
-
-# check how good the guesses were
-mae = mean_absolute_error(np.expm1(y_test), np.expm1(predictions))
-r2 = r2_score(y_test, predictions)
-
-print("Mean Absolute Error:", mae)
-print("R2 Score:", r2)
-model.save_model("model.json")
-print("Model saved as model.json")
+    model.save_model("model.json")
+    print("Model saved as model.json")
