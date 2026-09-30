@@ -1,0 +1,13 @@
+pandas
+numpy
+openpyxl
+scikit-learn
+xgboost
+mlflow
+fastapi
+uvicorn
+streamlit
+evidently
+pytest
+httpx
+requests

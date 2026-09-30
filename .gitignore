@@ -1,0 +1,22 @@
+# Python Caches
+__pycache__/
+*.py[cod]
+*$py.class
+
+# MLflow
+mlflow.db
+mlruns/
+
+# Environments
+.venv/
+venv/
+ENV/
+
+# OS / IDE
+.DS_Store
+.vscode/
+.idea/
+
+# Data files (tracked via DVC in Phase 2)
+data/Online Retail.xlsx
+data/rfm_features.csv
