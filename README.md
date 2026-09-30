@@ -27,3 +27,15 @@ Data versioning is managed using **DVC** (Data Version Control) with a local sto
   ```bash
   dvc pull
   ```
+
+## Running the Dashboard
+
+Launch the interactive Streamlit dashboard:
+
+```bash
+streamlit run dashboard/streamlit_app.py
+```
+
+Features included:
+- **Technical Panel**: Live model metrics (MAE, R²), training timestamp, and actual vs. predicted monetary value chart.
+- **Business Panel**: Customer segmentation distribution (High/Medium/Low), marketing spend allocation summary, cost savings vs naive baseline, and an interactive live CLV & spend calculator.
